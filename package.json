@@ -4,6 +4,7 @@
   "description": "a social media web app",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/dakshkhetan/codeial/issues"
   },
-  "homepage": "https://github.com/dakshkhetan/codeial#readme"
+  "homepage": "https://github.com/dakshkhetan/codeial#readme",
+  "dependencies": {
+    "nodemon": "^2.0.2"
+  }
 }
