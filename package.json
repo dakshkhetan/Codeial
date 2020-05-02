@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/dakshkhetan/codeial#readme",
   "dependencies": {
+    "ejs": "^3.1.2",
     "nodemon": "^2.0.2"
   }
 }
