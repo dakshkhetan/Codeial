@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');   // used for session cookie
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
+const MongoStore = require('connect-mongo')(session);
 
 // helps in reading through the POST request
 app.use(express.urlencoded());
@@ -27,6 +28,7 @@ app.use(expressLayouts);
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
+// Mongo Store is used to store the session cookie in the database
 app.use(session({
     name: 'Codeial',
     // TODO change the secret before deployment in production mode
@@ -35,7 +37,16 @@ app.use(session({
     resave: false,
     cookie: {
         maxAge: (1000 * 60 * 100)
-    }
+    },
+    store: new MongoStore(
+        {
+            mongooseConnection: db,
+            autoRemove: 'disabled'
+        },
+        function(err){
+            console.log(err || "connect-mongoDB setup OK");
+        }
+    )
 }));
 
 app.use(passport.initialize());
