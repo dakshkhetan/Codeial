@@ -7,17 +7,18 @@ module.exports.home = function(req, res){
 
     // return res.end('<h1> Express is up for Codeial! </h1>');
 
-    // // this query will return all the posts
-    // Post.find({}, function(err, posts){
-    //     return res.render('home', {
-    //         title: "Codeial | Home",
-    //         posts: posts
-    //     });
-    // });
-
-    // this query will return all the posts and
-    // populate the user of each post (i.e. fetching user Object from user ObjectId)
-    Post.find({}).populate('user').exec(function(err, posts){
+    // this query will return all the posts
+    // preload/populate the user of each post (i.e. fetching user Object from user ObjectId)
+    // preloading/populating comments and user of the comment (nested population)
+    Post.find({})
+    .populate('user')
+    .populate({
+        path: 'comments',
+        populate: {
+            path: 'user'
+        }
+    })
+    .exec(function(err, posts){
         return res.render('home', {
             title: "Codeial | Home",
             posts: posts
