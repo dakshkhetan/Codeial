@@ -18,11 +18,21 @@
       <% for(post of posts){ %>
               <li>
                   <p>
+                      <!-- if user is signed-in & also, if the user signed-in is same 
+                      as the user who created the post -->
+                      <% if((locals.user) && (locals.user.id == post.user.id)){ %>
+                          <small>
+                              <a href="/posts/destroy/<%= post.id %>">
+                                  X
+                              </a>
+                          </small>
+                      <% } %>
                       <%= post.content %>
                       <br>
                       <small>
                           <%= post.user.name %>
                       </small>
+                      
                       <div class="post-comments">
                           <!-- form is only displayed/rendered if an 'user' is present/signed-in -->
                           <% if(locals.user){ %>
