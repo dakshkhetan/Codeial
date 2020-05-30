@@ -32,7 +32,6 @@
                       <small>
                           <%= post.user.name %>
                       </small>
-                      
                       <div class="post-comments">
                           <!-- form is only displayed/rendered if an 'user' is present/signed-in -->
                           <% if(locals.user){ %>
@@ -46,8 +45,16 @@
                               <ul id="post-comments-<%= post._id %>">
                                   <% for(comment of post.comments){ %>
                                       <p>
+                                          <% if((locals.user) && (locals.user.id == comment.user.id)){ %>
+                                              <small>
+                                                  <a href="/comments/destroy/<%= comment.id %>">
+                                                      X
+                                                  </a>
+                                              </small>
+                                          <% } %>
                                           <%= comment.content %>
                                           <br>
+                                          
                                           <small>
                                               <%= comment.user.name %>
                                           </small>
