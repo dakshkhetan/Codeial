@@ -32,6 +32,15 @@ module.exports.create = function(req, res){
 
 module.exports.destroy = function(req, res){
     Comment.findById(req.params.id, function(err, comment){
+
+        // TODO: delete comments of other users on own posts
+        // Post.findById(comment.post, function(err, post){
+        //     // console.log(post.user);
+        //     console.log(post.user.id);
+        // });
+        // console.log(post.user.id);
+        
+        // if((comment.user == req.user.id) || (post.user == req.user.id)){
         if(comment.user == req.user.id){
             let postId = comment.post;
             comment.remove();
@@ -39,7 +48,7 @@ module.exports.destroy = function(req, res){
             // $pull is an inbuilt function of mongoose
             Post.findByIdAndUpdate(postId, { $pull : {comments: req.params.id}}, function(err, post){
                 return res.redirect('back');
-            })
+            });
         } else {
             return res.redirect('back');
         }
