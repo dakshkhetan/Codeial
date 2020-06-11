@@ -11,14 +11,24 @@
           <input type="submit" value="POST">
       </form>
   <% } %>
+
+  <div id="posts-list-container">
+      <ul>
+          <% for(post of posts){ %>
+                  
+              <%- include('_post'); %>
+          <% } %>
+      </ul>
+  </div>
 </section>
 
-<div id="posts-list-container">
-  <ul>
-      <% for(post of posts){ %>
-              
-          <%- include('_post'); %>
-          
-      <% } %>
-  </ul>
-</div>
+<section id="user-friends">
+  <h4>Friends</h4>
+  <% for(u of all_users){ %>
+      <p>
+          <a href="/users/profile/<%= u.id %>">
+              <%= u.name %>
+          </a>
+      </p>
+  <% } %>
+</section>
