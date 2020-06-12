@@ -1,12 +1,9 @@
 #layout-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
   color: white;
 
   a {
-      color: white;
-      text-decoration: none;
+    color: white;
+    text-decoration: none;
   }
 
   background: grey;
@@ -15,8 +12,8 @@
   justify-content: flex-start;
 
   .footer-nav {
-      ul {
-          list-style: none;
-      }
+    ul {
+      list-style: none;
+    }
   }
 }
