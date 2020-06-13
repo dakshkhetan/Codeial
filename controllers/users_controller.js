@@ -2,6 +2,8 @@ const User = require('../models/user');
 
 // module.exports.actionName = function(req, res){};
 
+// not changing it to async function
+// since only one callback function is present here
 module.exports.profile = function(req, res){
     User.findById(req.params.id, function(err, user){
         return res.render('user_profile', {

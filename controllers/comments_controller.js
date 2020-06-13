@@ -1,37 +1,36 @@
 const Comment = require('../models/comment');
 const Post = require('../models/post');
 
-module.exports.create = function(req, res){
-    // 'req.body.post' , here 'post' is the name of hidden input in comment-form
-    Post.findById(req.body.post, function(err, post){    
-        if(err){
-            console.log("Error in finding post");
-            return;
-        }
+module.exports.create = async function(req, res){
+    try {
+
+        // 'req.body.post' , here 'post' is the name of hidden input in comment-form
+        let post = await Post.findById(req.body.post);
 
         if(post){
-            Comment.create({
+            let comment = await Comment.create({
                 content: req.body.content,
                 user: req.user._id,
                 post: req.body.post   // or post._id
-            }, function(err, comment){
-                if(err){
-                    console.log("Error in creating comment to post");
-                    return;
-                }
-
-                // adding comment to the post (comment array defined in postSchema)
-                post.comments.push(comment);
-                post.save();
-
-                return res.redirect('/');
             });
+
+            // adding comment to the post (comment array defined in postSchema)
+            post.comments.push(comment);
+            post.save();
+
+            return res.redirect('/');
         }
-    });
+
+    } catch(err) {
+        console.log("Error", err);
+        return;
+    }
 };
 
-module.exports.destroy = function(req, res){
-    Comment.findById(req.params.id, function(err, comment){
+module.exports.destroy = async function(req, res){
+    try {
+
+        let comment = await Comment.findById(req.params.id);
 
         // TODO: delete comments of other users on own posts
         // Post.findById(comment.post, function(err, post){
@@ -46,11 +45,14 @@ module.exports.destroy = function(req, res){
             comment.remove();
             // important: we need to update the comments array in the postSchema
             // $pull is an inbuilt function of mongoose
-            Post.findByIdAndUpdate(postId, { $pull : {comments: req.params.id}}, function(err, post){
+            let post = await Post.findByIdAndUpdate(postId, { $pull : {comments: req.params.id}});
                 return res.redirect('back');
-            });
         } else {
             return res.redirect('back');
         }
-    });
+
+    } catch(err) {
+        console.log("Error", err);
+        return;
+    }
 };
