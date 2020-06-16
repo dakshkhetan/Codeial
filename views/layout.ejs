@@ -16,6 +16,13 @@
     
     <%- include('_header'); %>
 
+    <!-- flash.success should not be an empty string/object -->
+    <% if(flash.success && flash.success.length > 0){ %>
+        <h5>
+            <%= flash.success %>
+        </h5>
+    <% } %>
+
     <main id="layout-main">
         <!-- use body of home or user_profile etc. -->
         <%- body %>
