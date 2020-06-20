@@ -17,9 +17,11 @@ module.exports.update = function(req, res){
     if(req.user.id == req.params.id){
         // User.findByIdAndUpdate(req.params.id, {name: req.body.name, email: req.body.email}, function(err, user));
         User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
+            req.flash('success', 'Updated!');
             return res.redirect('back');
         });
     } else {
+        req.flash('error', 'Unauthorized!');
         return res.status(401).send('Unauthorized');  // 401 is HTTP Status Code for Unauthorized
     }
 };
@@ -53,23 +55,25 @@ module.exports.signIn = function(req, res){
 // get the sign up data
 module.exports.create = function(req, res){
     if(req.body.password != req.body.confirm_password){
+        req.flash('error', 'Passwords do not match!');
         return res.redirect('back');
     }
     // find user by 'email' parameter/property
     User.findOne({email: req.body.email}, function(err, user){
         if(err){
-            console.log('Error in finding user in signing up.');
+            req.flash('error', 'Error in finding user in signing up.');
             return;
         }
         if(!user){  // if user is not created
             User.create(req.body, function(err, user){
                 if(err){
-                    console.log('Error in creating user while signing up.');
+                    req.flash('error', 'Error in creating user while signing up.');
                     return;
                 }
                 return res.redirect('/users/sign-in');    //url
             })
         } else {    // i.e. user is already created
+            req.flash('success', 'You have signed up, login to continue.');
             return res.redirect('back');
         }
     })
