@@ -116,7 +116,10 @@
           let deleteButton = $(' .delete-post-button', self);
           deletePost(deleteButton);
 
-          // get the post's id by splitting the id attribute
+          // get the post's id by splitting the 'id' attribute
+          // splitting is done when hyphen (-) is encountered
+          // i.e. id="post-${ post._id }
+          // [1] refers to the first element in the array
           let postId = self.prop('id').split("-")[1]
           new PostComments(postId);
       });
