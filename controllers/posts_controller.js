@@ -11,6 +11,10 @@ module.exports.create = async function(req, res){
 
         // to check if an AJAX request is made
         if(req.xhr){    // XMLHttpRequest : it's the type of an AJAX request
+                
+            // if we want to populate just the name of the user (we'll not want to send the password in the API), this is how we do it!
+            post = await post.populate('user', 'name').execPopulate();
+    
             return res.status(200).json({   // 200 is for success
                 data: {
                     post: post
@@ -24,6 +28,8 @@ module.exports.create = async function(req, res){
 
     } catch(err) {
         req.flash('error', err);
+        // added this to view the error on console as well
+        console.log(err);
         return res.redirect('back');
     }
 };

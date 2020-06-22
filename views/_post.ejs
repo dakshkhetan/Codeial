@@ -21,7 +21,9 @@
 
           <!-- form is only displayed/rendered if an 'user' is present/signed-in -->
           <% if(locals.user){ %>
-              <form action="/comments/create" id="new-comment-form" method="POST">
+              <!-- let's give an id to the new comment form, we'll also need to make the
+                   same changes in home_posts.js where we're adding a post to the page -->
+              <form id="post-<%= post._id %>-comments-form" action="/comments/create" method="POST">
                   <input type="text" name="content" placeholder="Type here to add comment..." required>
                   <input type="hidden" name="post" value="<%= post._id %>">
                   <input type="submit" value="Add Comment">
@@ -33,6 +35,7 @@
                   <% for(comment of post.comments){ %>
                       
                       <%- include('_comment'); %>
+
                   <% } %>
               </ul>
           </div>
