@@ -18,6 +18,13 @@
                   // console.log(data);
                   let newPost = newPostDom(data.data.post);
                   $('#posts-list-container>ul').prepend(newPost);
+
+                  // to populate the 'deleteLink' parameter inside 'deletePost()' function defined below
+                  // below statement means, class named 'delete-post-button' inside the object 'newPost'
+                  // there should be a space before .delete-post-button 
+                  // this is JQuery syntax 
+                  deletePost($(' .delete-post-button', newPost));
+
               }, error: function(error){
                   console.log(error.responseText);
               }
@@ -34,7 +41,7 @@
       return $(`<li id="post-${ post._id }">
                   <p>
                       <small>
-                          <a class="delete-post-button" href="/posts/destroy/${ post.id }">
+                          <a class="delete-post-button" href="/posts/destroy/${ post._id }">
                               X
                           </a>
                       </small>
@@ -62,6 +69,25 @@
                       </div>
                   </p>
               </li>`);
+  };
+
+  // method to delete a post from DOM
+  let deletePost = function(deleteLink){
+
+      $(deleteLink).click(function(e){
+          e.preventDefault();
+
+          $.ajax({
+              type: 'get',
+              url: $(deleteLink).prop('href'),  // fetches the url defined in 'href' attribute of 'a' tag
+              success: function(data){
+                  $(`#post-${ data.data.post_id }`).remove();
+              },
+              error: function(error){
+                  console.log(error.responseText);
+              }
+          });
+      });
   };
 
   createPost();
