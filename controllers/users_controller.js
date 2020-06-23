@@ -45,6 +45,7 @@ module.exports.update = async function(req, res){
                 user.name = req.body.name;
                 user.email = req.body.email;
                 
+                // avatar will be set only when a file is uploaded i.e. when request contains a file
                 if(req.file){
                     // console.log(req.file);
                     

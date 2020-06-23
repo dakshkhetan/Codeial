@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
 
 let storage = multer.diskStorage({
     destination: function(req, file, cb){
-        // __dirname = models/
+        // __dirname = models (current directory)
         // .. signifies two levels up
         // AVATAR_PATH = /uploads/users/avatar
         cb(null, path.join(__dirname, '..', AVATAR_PATH));
@@ -38,7 +38,7 @@ let storage = multer.diskStorage({
     }
 });
 
-// Static methods:
+// Static methods (to be made publicly/globally available): 
 // .single('avatar') means only one file will be uploaded for the fieldname 'avatar'
 userSchema.statics.uploadedAvatar = multer({storage: storage}).single('avatar');
 userSchema.statics.avatarPath = AVATAR_PATH;
