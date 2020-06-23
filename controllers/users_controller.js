@@ -13,17 +13,60 @@ module.exports.profile = function(req, res){
     });
 };
 
-module.exports.update = function(req, res){
-    if(req.user.id == req.params.id){
-        // User.findByIdAndUpdate(req.params.id, {name: req.body.name, email: req.body.email}, function(err, user));
-        User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
-            req.flash('success', 'Updated!');
+module.exports.update = async function(req, res){
+
+    // Without Async Await Code:
+    // if(req.user.id == req.params.id){
+    //     // User.findByIdAndUpdate(req.params.id, {name: req.body.name, email: req.body.email}, function(err, user));
+    //     User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
+    //         req.flash('success', 'Updated!');
+    //         return res.redirect('back');
+    //     });
+    // } else {
+    //     req.flash('error', 'Unauthorized!');
+    //     return res.status(401).send('Unauthorized');  // 401 is HTTP Status Code for Unauthorized
+    // }
+
+    if (req.user.id == req.params.id){
+        try {
+
+            // we need to first find and then update the user's profile record
+
+            let user = await User.findById(req.params.id);
+
+            // now, we cannot use req.body params in the form to fetch new/updated user data
+            // hence, we'll need to use the static method/function 'uploadedAvatar' to use req params
+            User.uploadedAvatar(req, res, function(err){
+                if(err){
+                    console.log("Multer Error: ", err);
+                }
+
+                // updating user data
+                user.name = req.body.name;
+                user.email = req.body.email;
+                
+                if(req.file){
+                    // console.log(req.file);
+                    
+                    // saving the path of uploaded file into the avatar field in the 'user'
+                    // 'avatarPath' is the static method/function created in userSchema
+                    user.avatar = User.avatarPath + '/' + req.file.filename;
+                }
+                
+                user.save();
+
+                return res.redirect('back');
+            });
+    
+        } catch(err) {
+            req.flash('error', err);
             return res.redirect('back');
-        });
+        }
     } else {
         req.flash('error', 'Unauthorized!');
         return res.status(401).send('Unauthorized');  // 401 is HTTP Status Code for Unauthorized
     }
+
 };
 
 // render the sign up page
