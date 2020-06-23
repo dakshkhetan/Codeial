@@ -5,6 +5,8 @@
 
     <% if(user.id == profile_user.id){ %>
     <!-- if user matches then show the form -->
+        <!-- body-parser can't parse form data now, due to enctype="multipart/form-data" -->
+        <!-- i.e. it is now a multipart form -->
         <form action="/users/update/<%= profile_user.id %>" enctype="multipart/form-data" method="POST">
             <input type="text" name="name" placeholder="Your Name" value="<%= profile_user.name %>" required>
             <input type="email" name="email" placeholder="Your Email" value="<%= profile_user.email %>" required>
