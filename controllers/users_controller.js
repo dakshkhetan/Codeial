@@ -1,4 +1,6 @@
 const User = require('../models/user');
+const fs = require('fs');   // file system (for I/O operations)
+const path = require('path');
 
 // module.exports.actionName = function(req, res){};
 
@@ -14,18 +16,6 @@ module.exports.profile = function(req, res){
 };
 
 module.exports.update = async function(req, res){
-
-    // Without Async Await Code:
-    // if(req.user.id == req.params.id){
-    //     // User.findByIdAndUpdate(req.params.id, {name: req.body.name, email: req.body.email}, function(err, user));
-    //     User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
-    //         req.flash('success', 'Updated!');
-    //         return res.redirect('back');
-    //     });
-    // } else {
-    //     req.flash('error', 'Unauthorized!');
-    //     return res.status(401).send('Unauthorized');  // 401 is HTTP Status Code for Unauthorized
-    // }
 
     if (req.user.id == req.params.id){
         try {
@@ -48,6 +38,14 @@ module.exports.update = async function(req, res){
                 // avatar will be set only when a file is uploaded i.e. when request contains a file
                 if(req.file){
                     // console.log(req.file);
+
+                    // TODO: edit the below if condition in order to handle
+                    // the case when all avatar files are deleted
+
+                    // to delete previous avatar file uploads
+                    if(user.avatar){
+                        fs.unlinkSync(path.join(__dirname, '..', user.avatar));
+                    }
                     
                     // saving the path of uploaded file into the avatar field in the 'user'
                     // 'avatarPath' is the static method/function created in userSchema
@@ -55,7 +53,7 @@ module.exports.update = async function(req, res){
                 }
                 
                 user.save();
-
+                req.flash('success', 'Profile updated!');
                 return res.redirect('back');
             });
     
