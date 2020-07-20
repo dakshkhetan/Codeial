@@ -8,7 +8,7 @@ passport.use(new googleStrategy({
         // from oauth2.0 key generated on 'console.developers.google.com'
         clientID: "448487103035-m3assm4hqjfgmss47jgvjbl230pgmfgq.apps.googleusercontent.com",
         clientSecret: "QOxXTH3qDiGuBWpyk3vQnfHV",
-        callbackURL: "http://localhost:8000/users/auth/google"
+        callbackURL: "http://localhost:8000/users/auth/google/callback"
     }, function(accessToken, refreshToken, profile, done){
         // find a user
         User.findOne({email: profile.emails[0].value}).exec(function(err, user){
@@ -17,6 +17,7 @@ passport.use(new googleStrategy({
                 return;
             }
 
+            console.log(accessToken, refreshToken);
             console.log(profile);
 
             if(user){
