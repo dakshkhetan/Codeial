@@ -4,10 +4,11 @@ const path = require('path');
 
 let transporter = nodemailer.createTransport({
     service: 'gmail',
-    host: 'smtp.gmail.com',   // uses SMTP protocol
+    host: 'smtp.gmail.com',   // uses SMTP (Simple Mail Transfer Protocol) protocol
     port: 587,  // for TLS
     secure: false,
     auth: {
+        // turn on 'Less Secure App Access' for this Gmail account
         user: '',
         pass: ''
     }
