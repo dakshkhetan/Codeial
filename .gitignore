@@ -1,1 +1,5 @@
+# Dependencies
 node_modules/
+
+# Misc files
+.DS_Store
