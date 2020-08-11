@@ -17,6 +17,23 @@
           <%= post.user.name %>
       </small>
 
+      <br>
+      
+      <!-- display the likes of this post, if the user is logged in, 
+          then show the link to toggle likes, else, just show the count -->
+      <small>
+          <!-- the "data-likes" attribute inside <a> tag will be used in 'home_posts.js' script -->
+          <% if(locals.user){ %>
+              <a class="toggle-like-button" data-likes="<%= post.likes.length %>" href="/likes/toggle/?id=<%=post._id%>&type=Post">
+                  <%= post.likes.length %> Likes
+              </a>
+          <% } else { %>
+              <%= post.likes.length %> Likes
+          <% } %>
+      </small>
+
+  </p>
+
       <div class="post-comments">
 
           <!-- form is only displayed/rendered if an 'user' is present/signed-in -->
@@ -29,17 +46,14 @@
                   <input type="submit" value="Add Comment">
               </form>
           <% } %>
-
           <div class="post-comments-list">
               <ul id="post-comments-<%= post._id %>">
                   <% for(comment of post.comments){ %>
                       
                       <%- include('_comment'); %>
-
                   <% } %>
               </ul>
           </div>
-
       </div>
-  </p>
+  
 </li>

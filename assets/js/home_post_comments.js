@@ -15,7 +15,7 @@ class PostComments {
       this.createComment(postId);
 
       let self = this;
-
+      
       // call for all the existing comments
       $(' .delete-comment-button', this.postContainer).each(function(){
           self.deleteComment($(this));
@@ -39,6 +39,9 @@ class PostComments {
                   $(`#post-comments-${postId}`).prepend(newComment);
                   pSelf.deleteComment($(' .delete-comment-button', newComment));
 
+                  // enable the functionality of the toggle like button on the new comment
+                  new ToggleLike($(' .toggle-like-button', newComment));
+
                   new Noty({
                       theme: 'relax',
                       text: "Comment published!",
@@ -55,7 +58,7 @@ class PostComments {
       });
   }
 
-
+  // show the count of likes as zero on this comment
   newCommentDom(comment){
       return $(`<li id="comment-${ comment._id }">
                       <p> 
@@ -67,6 +70,12 @@ class PostComments {
                           <small>
                               ${comment.user.name}
                           </small>
+                          <small>
+                              <a class="toggle-like-button" data-likes="0" href="/likes/toggle/?id=${comment._id}&type=Comment">
+                                  0 Likes
+                              </a>
+                          </small>
+                          
                       </p>    
               </li>`);
   }

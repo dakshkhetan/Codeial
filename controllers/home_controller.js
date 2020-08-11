@@ -5,7 +5,7 @@ module.exports.home =  async function(req, res){
 
     // this query will return all the posts
     // preload/populate the user of each post (i.e. fetching user Object from user ObjectId)
-    // preloading/populating comments and user of the comment (nested population)
+    // preloading/populating comments, user of the comment, and its likes. (nested population)
     
     try {
 
@@ -16,8 +16,11 @@ module.exports.home =  async function(req, res){
             path: 'comments',
             populate: {
                 path: 'user'
+            },
+            populate: {
+                path: 'likes'
             }
-        })
+        }).populate('likes');
 
         let users = await User.find({});
 
