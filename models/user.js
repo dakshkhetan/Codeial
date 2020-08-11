@@ -20,7 +20,13 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: String
-    }
+    },
+    friendships: [
+        { 
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Friendship' 
+        }
+    ]
 }, {
     // timestamps add 'created at' & 'updated at'
     timestamps: true

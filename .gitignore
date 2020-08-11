@@ -3,3 +3,6 @@ node_modules/
 
 # Misc files
 .DS_Store
+
+# Ignore redis binary dump (dump.rdb) files
+*.rdb
