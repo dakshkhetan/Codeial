@@ -1,18 +1,9 @@
 const nodemailer = require('nodemailer');
 const ejs = require('ejs');
 const path = require('path');
+const env = require('./environment');
 
-let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    host: 'smtp.gmail.com',   // uses SMTP (Simple Mail Transfer Protocol) protocol
-    port: 587,  // for TLS
-    secure: false,
-    auth: {
-        // turn on 'Less Secure App Access' for this Gmail account
-        user: '',
-        pass: ''
-    }
-});
+let transporter = nodemailer.createTransport(env.smtp);
 
 // rendering an HTML email where that file would be stored inside (../views/mailers) directory
 let renderTemplate = (data, relativePath) => {
