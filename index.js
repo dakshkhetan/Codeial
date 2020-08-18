@@ -37,7 +37,7 @@ app.use(express.urlencoded());
 app.use(cookieParser());
 
 // set up static file access (for CSS) 
-app.use(express.static(env.asset_path));
+app.use(express.static(path.join(__dirname, env.asset_path)));
 
 // make the uploads path available to the browser
 app.use('/uploads', express.static(__dirname + '/uploads'));
