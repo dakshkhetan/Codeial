@@ -1,0 +1,5 @@
+[0mGET / [32m200[0m 54.775 ms - 11384[0m
+[0mGET /js/home_post_comments.js [36m304[0m 3.358 ms - -[0m
+[0mGET /js/home_posts.js [36m304[0m 0.524 ms - -[0m
+[0mGET /js/toggle_likes.js [36m304[0m 1.141 ms - -[0m
+[0mGET /js/chat_engine.js [36m304[0m 1.990 ms - -[0m
