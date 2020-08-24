@@ -2,6 +2,7 @@ const express = require('express');
 const env = require('./config/environment');
 const logger = require('morgan');
 const app = express();
+require('./config/view-helpers')(app);
 const port = 8000;
 const expressLayouts = require('express-ejs-layouts');
 const db = require('./config/mongoose');
@@ -42,7 +43,7 @@ app.use(cookieParser());
 app.use(logger(env.morgan.mode, env.morgan.options));
 
 // set up static file access (for CSS) 
-app.use(express.static(path.join(__dirname, env.asset_path)));
+app.use(express.static(env.asset_path));
 
 // make the uploads path available to the browser
 app.use('/uploads', express.static(__dirname + '/uploads'));
