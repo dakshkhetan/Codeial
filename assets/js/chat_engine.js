@@ -1,68 +1,70 @@
 class ChatEngine {
-  constructor(chatBoxId, userEmail){
-      this.chatBox = $(`#${chatBoxId}`);
-      this.userEmail = userEmail;
+  constructor(chatBoxId, userEmail) {
+    this.chatBox = $(`#${chatBoxId}`);
+    this.userEmail = userEmail;
 
-      this.socket = io.connect('http://localhost:5000');
+    this.socket = io.connect('http://localhost:5000');
 
-      if (this.userEmail){
-          this.connectionHandler();
-      }
-
+    if (this.userEmail) {
+      this.connectionHandler();
+    }
   }
 
-  connectionHandler(){
-      let self = this;
+  connectionHandler() {
+    let self = this;
 
-      this.socket.on('connect', function(){
-          console.log('Connection established using sockets!');
+    this.socket.on('connect', function () {
+      console.log('Connection established using sockets!');
 
-          self.socket.emit('join_room', {
-              user_email: self.userEmail,
-              chatroom: 'codeial'
-          });
-
-          self.socket.on('user_joined', function(data){
-              console.log('a user joined!', data);
-          });
-
+      self.socket.emit('join_room', {
+        user_email: self.userEmail,
+        chatroom: 'codeial'
       });
 
-      // send a message on clicking the send message button
-      $('#send-message').click(function(){
-          let msg = $('#chat-message-input').val();
-
-          if(msg != ''){
-              self.socket.emit('send_message', {
-                  message: msg,
-                  user_email: self.userEmail,
-                  chatroom: 'codeial'
-              });
-          }
+      self.socket.on('user_joined', function (data) {
+        console.log('a user joined!', data);
       });
+    });
 
-      self.socket.on('receive_message', function(data){
-          console.log('message received:', data.message);
+    // send a message on clicking the send message button
+    $('#send-message').click(function () {
+      let msg = $('#chat-message-input').val();
 
-          let newMessage = $('<li>');
+      if (msg != '') {
+        self.socket.emit('send_message', {
+          message: msg,
+          user_email: self.userEmail,
+          chatroom: 'codeial'
+        });
+      }
+    });
 
-          let messageType = 'other-message';
+    self.socket.on('receive_message', function (data) {
+      console.log('message received:', data.message);
 
-          if(data.user_email == self.userEmail){
-              messageType = 'self-message';
-          }
+      let newMessage = $('<li>');
 
-          newMessage.append($('<span>', {
-              'html': data.message
-          }));
+      let messageType = 'other-message';
 
-          newMessage.append($('<sub>', {
-              'html': data.user_email
-          }));
+      if (data.user_email == self.userEmail) {
+        messageType = 'self-message';
+      }
 
-          newMessage.addClass(messageType);
+      newMessage.append(
+        $('<span>', {
+          html: data.message
+        })
+      );
 
-          $('#chat-messages-list').append(newMessage);
-      });
+      newMessage.append(
+        $('<sub>', {
+          html: data.user_email
+        })
+      );
+
+      newMessage.addClass(messageType);
+
+      $('#chat-messages-list').append(newMessage);
+    });
   }
 }

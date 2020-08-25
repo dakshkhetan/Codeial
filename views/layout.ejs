@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title> <%= title %> </title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title><%= title %></title>
     <!-- Noty js CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
     <!-- JQuery CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- '/' below in the beginning refers to the root of 'assets' path we setted up in index.js -->
-    <link rel="stylesheet" href="<%= assetPath('css/layout.css') %>">
-    <link rel="stylesheet" href="<%= assetPath('css/header.css') %>">
-    <link rel="stylesheet" href="<%= assetPath('css/footer.css') %>">
+    <link rel="stylesheet" href="<%= assetPath('css/layout.css') %>" />
+    <link rel="stylesheet" href="<%= assetPath('css/header.css') %>" />
+    <link rel="stylesheet" href="<%= assetPath('css/footer.css') %>" />
     <!-- it inserts every 'link' tag present in every views (home, user_profile, etc..) here -->
     <%- style %>
-</head>
-<body>
-    
+  </head>
+  <body>
     <%- include('_header'); %>
 
     <main id="layout-main">
-        <!-- use body of home or user_profile etc. -->
-        <%- body %>
+      <!-- use body of home or user_profile etc. -->
+      <%- body %>
     </main>
 
     <%- include('_footer'); %>
@@ -32,27 +34,26 @@
     <%- script %>
 
     <script>
-        <!-- flash.success should not be an empty string/object -->
-        <% if(flash.success && flash.success.length > 0){ %>
-            new Noty({
-                theme: 'relax',
-                text: '<%= flash.success %>',
-                type: 'success',
-                layout: 'topRight',
-                timeout: 1500
-            }).show();
-        <% } %>
-        <!-- flash.error should not be an empty string/object -->
-        <% if(flash.error && flash.error.length > 0){ %>
-            new Noty({
-                theme: 'relax',
-                text: '<%= flash.error %>',
-                type: 'error',
-                layout: 'topRight',
-                timeout: 1500
-            }).show();
-        <% } %>
+      <!-- flash.success should not be an empty string/object -->
+      <% if(flash.success && flash.success.length > 0){ %>
+          new Noty({
+              theme: 'relax',
+              text: '<%= flash.success %>',
+              type: 'success',
+              layout: 'topRight',
+              timeout: 1500
+          }).show();
+      <% } %>
+      <!-- flash.error should not be an empty string/object -->
+      <% if(flash.error && flash.error.length > 0){ %>
+          new Noty({
+              theme: 'relax',
+              text: '<%= flash.error %>',
+              type: 'error',
+              layout: 'topRight',
+              timeout: 1500
+          }).show();
+      <% } %>
     </script>
-
-</body>
+  </body>
 </html>

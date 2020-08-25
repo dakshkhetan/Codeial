@@ -7,7 +7,7 @@ const port = 8000;
 const expressLayouts = require('express-ejs-layouts');
 const db = require('./config/mongoose');
 const cookieParser = require('cookie-parser');
-const session = require('express-session');   // used for session cookie
+const session = require('express-session'); // used for session cookie
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const passportJWT = require('./config/passport-jwt-strategy');
@@ -25,14 +25,16 @@ chatServer.listen(5000);
 console.log('Chat server is listening on port: 5000');
 
 // SASS middleware
-if(env.name == 'development'){
-    app.use(sassMiddleware({
-        src: path.join(__dirname, env.asset_path, 'scss'),
-        dest: path.join(__dirname, env.asset_path, 'css'),
-        debug: true,
-        outputStyle: 'extended',
-        prefix: '/css'
-    }));
+if (env.name == 'development') {
+  app.use(
+    sassMiddleware({
+      src: path.join(__dirname, env.asset_path, 'scss'),
+      dest: path.join(__dirname, env.asset_path, 'css'),
+      debug: true,
+      outputStyle: 'extended',
+      prefix: '/css'
+    })
+  );
 }
 
 // helps in reading through the POST request
@@ -42,7 +44,7 @@ app.use(cookieParser());
 
 app.use(logger(env.morgan.mode, env.morgan.options));
 
-// set up static file access (for CSS) 
+// set up static file access (for CSS)
 app.use(express.static(env.asset_path));
 
 // make the uploads path available to the browser
@@ -60,25 +62,27 @@ app.set('view engine', 'ejs');
 app.set('views', './views');
 
 // Mongo Store is used to store the session cookie in the database
-app.use(session({
+app.use(
+  session({
     name: 'Codeial',
     // TODO change the secret before deployment in production mode
     secret: env.session_cookie_key,
     saveUninitialized: false,
     resave: false,
     cookie: {
-        maxAge: (1000 * 60 * 100)
+      maxAge: 1000 * 60 * 100
     },
     store: new MongoStore(
-        {
-            mongooseConnection: db,
-            autoRemove: 'disabled'
-        },
-        function(err){
-            console.log(err || "connect-mongoDB setup OK");
-        }
+      {
+        mongooseConnection: db,
+        autoRemove: 'disabled'
+      },
+      function (err) {
+        console.log(err || 'connect-mongoDB setup OK');
+      }
     )
-}));
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -92,11 +96,11 @@ app.use(customMware.setFlash);
 app.use('/', require('./routes'));
 
 // server:
-app.listen(port, function(err){
-    if(err){
-        // interpolation using back-ticks : ``
-        console.log(`Error in setting up server: ${err}`);
-    }
-    // console.log("Server is up and running on port:", port);
-    console.log(`Server is up and running on port: ${port}`);
+app.listen(port, function (err) {
+  if (err) {
+    // interpolation using back-ticks : ``
+    console.log(`Error in setting up server: ${err}`);
+  }
+  // console.log("Server is up and running on port:", port);
+  console.log(`Server is up and running on port: ${port}`);
 });
